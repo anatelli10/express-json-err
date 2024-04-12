@@ -1,10 +1,11 @@
+// adapted from https://github.com/expressjs/api-error-handler/blob/master/index.js
+import { ErrorRequestHandler } from 'express';
 import statuses from 'statuses';
 
-// adapted from https://github.com/expressjs/api-error-handler/blob/master/index.js
-export const errorHandler = (err: any, _req: any, res: any, _next: any) => {
+export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
 	const { code, name, message, type, stack } = err;
 
-	const isDevelopment = process.env.NODE_ENV === 'development';
+	const isDevelopment = 'development' === process.env.NODE_ENV;
 
 	const status = (() => {
 		const code = err.status || err.statusCode;
@@ -16,7 +17,7 @@ export const errorHandler = (err: any, _req: any, res: any, _next: any) => {
 	if (status >= 500) {
 		console.error(stack);
 
-		return res.statusCode(status).json({
+		return res.status(status).json({
 			status,
 			message: statuses(status),
 			...(isDevelopment && { stack }),
@@ -24,7 +25,7 @@ export const errorHandler = (err: any, _req: any, res: any, _next: any) => {
 	}
 
 	// client errors
-	res.statusCode(status).json({
+	res.status(status).json({
 		status,
 		message,
 		...(code && { code }),

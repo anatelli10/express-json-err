@@ -2,6 +2,8 @@
 import { ErrorRequestHandler as RequestHandler } from 'express';
 import statuses from 'statuses';
 
+export default errorHandler;
+
 export type ErrorHandlerOptions = Partial<{
 	/**
 	 * Determines whether the response should contain the error stack trace.
@@ -24,9 +26,9 @@ export type ErrorHandlerOptions = Partial<{
  *
  * app.listen(...);
  */
-export function errorHandler(...args: Parameters<RequestHandler>): ReturnType<RequestHandler>;
-export function errorHandler(options?: ErrorHandlerOptions): RequestHandler;
-export function errorHandler(
+function errorHandler(...args: Parameters<RequestHandler>): ReturnType<RequestHandler>;
+function errorHandler(options?: ErrorHandlerOptions): RequestHandler;
+function errorHandler(
 	_optionsOrErr?: ErrorHandlerOptions | Parameters<RequestHandler>[0],
 	_req?: Parameters<RequestHandler>[1],
 	res?: Parameters<RequestHandler>[2],

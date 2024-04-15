@@ -2,6 +2,8 @@
 import { ErrorRequestHandler as RequestHandler } from 'express';
 import statuses from 'statuses';
 
+export default errorHandler;
+
 export type ErrorHandlerOptions = Partial<{
 	/**
 	 * Determines whether the response should contain the error stack trace.
@@ -16,26 +18,21 @@ export type ErrorHandlerOptions = Partial<{
  * @example
  *
  * const app = express()
- * 	.get(...)
+ * 	.get(...);
  *
  * app.use(errorHandler);
  * // or with options configured..
- * app.use(errorHandler({ showStackTrace: true } | {} | undefined));
+ * app.use(errorHandler({ showStackTrace: true } | {} | undefined | never));
  *
  * app.listen(...);
  */
-export function errorHandler(...args: Parameters<RequestHandler>): ReturnType<RequestHandler>;
-export function errorHandler(
-	options: ErrorHandlerOptions | undefined,
-	_arg1?: undefined,
-	_arg2?: undefined,
-	_arg3?: undefined,
-): RequestHandler;
-export function errorHandler(
-	_errOrOptions: ErrorHandlerOptions | undefined | Parameters<RequestHandler>[0],
-	_req: undefined | Parameters<RequestHandler>[1],
-	res: undefined | Parameters<RequestHandler>[2],
-	_next: undefined | Parameters<RequestHandler>[3],
+function errorHandler(...args: Parameters<RequestHandler>): ReturnType<RequestHandler>;
+function errorHandler(options?: ErrorHandlerOptions): RequestHandler;
+function errorHandler(
+	_optionsOrErr?: ErrorHandlerOptions | Parameters<RequestHandler>[0],
+	_req?: Parameters<RequestHandler>[1],
+	res?: Parameters<RequestHandler>[2],
+	_next?: Parameters<RequestHandler>[3],
 ): RequestHandler | ReturnType<RequestHandler> {
 	var config: ErrorHandlerOptions = {
 		showStackTrace: 'development' === process.env.NODE_ENV,
@@ -46,12 +43,12 @@ export function errorHandler(
 	//
 	// i.e. `app.use(errorHandler)`
 	if (_req != null) {
-		const err: Parameters<RequestHandler>[0] = _errOrOptions;
+		const err: Parameters<RequestHandler>[0] = _optionsOrErr;
 
 		return handler(err, _req, res!, _next!);
 	}
 
-	const options: ErrorHandlerOptions = _errOrOptions ?? {};
+	const options: ErrorHandlerOptions = _optionsOrErr ?? {};
 
 	// We're receiving configuration options
 	//

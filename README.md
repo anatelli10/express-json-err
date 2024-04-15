@@ -1,36 +1,40 @@
 
-# api-error-handler
-
-[![NPM version][npm-image]][npm-url]
-[![Build status][travis-image]][travis-url]
-[![Test coverage][coveralls-image]][coveralls-url]
-[![Dependency Status][david-image]][david-url]
-[![License][license-image]][license-url]
-[![Downloads][downloads-image]][downloads-url]
-[![Gittip][gittip-image]][gittip-url]
+# express-json-error
 
 An error handler for JSON APIs, meant to be used with [http-errors](https://github.com/jshttp/http-errors)-style errors.
 
 ## Example
 
-```js
-var errorHandler = require('api-error-handler');
+```ts
+import { errorHandler } from 'express-json-error';
 
-var api = new express.Router();
-api.get('/users/:userid', function (req, res, next) {
+const app = express()
+	.get(...);
 
-});
+api.use(errorHandler);
+// or with options configured..
+app.use(errorHandler({ showStackTrace: true } | {} | undefined | never));
 
-api.use(errorHandler());
-
-app.use('/api', api);
+app.listen(...);
 ```
 
 ## API
 
-### .use(errorHandler([options]))
+_after your routes:_
 
-Currently no options.
+```ts
+app.use(errorHandler)
+```
+
+```ts
+app.use(errorHandler(options | {} | undefined | never))
+```
+
+### Options
+
+#### `showStackTrace` 
+* Determines whether the response should contain the error stack trace.
+* By default, stack trace is only included when the environment variable `NODE_ENV` is `"development"`.
 
 ### Errors
 
@@ -45,22 +49,3 @@ Properties exposed are:
 
 5xx errors are not exposed to the client.
 Instead, they are given a generic `message` as well as the `type`.
-
-[gitter-image]: https://badges.gitter.im/expressjs/api-error-handler.png
-[gitter-url]: https://gitter.im/expressjs/api-error-handler
-[npm-image]: https://img.shields.io/npm/v/api-error-handler.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/api-error-handler
-[github-tag]: http://img.shields.io/github/tag/expressjs/api-error-handler.svg?style=flat-square
-[github-url]: https://github.com/expressjs/api-error-handler/tags
-[travis-image]: https://img.shields.io/travis/expressjs/api-error-handler.svg?style=flat-square
-[travis-url]: https://travis-ci.org/expressjs/api-error-handler
-[coveralls-image]: https://img.shields.io/coveralls/expressjs/api-error-handler.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/expressjs/api-error-handler
-[david-image]: http://img.shields.io/david/expressjs/api-error-handler.svg?style=flat-square
-[david-url]: https://david-dm.org/expressjs/api-error-handler
-[license-image]: http://img.shields.io/npm/l/api-error-handler.svg?style=flat-square
-[license-url]: LICENSE
-[downloads-image]: http://img.shields.io/npm/dm/api-error-handler.svg?style=flat-square
-[downloads-url]: https://npmjs.org/package/api-error-handler
-[gittip-image]: https://img.shields.io/gratipay/jonathanong.svg?style=flat-square
-[gittip-url]: https://gratipay.com/expressjs/

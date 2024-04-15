@@ -6,14 +6,14 @@ An error handler for JSON APIs, meant to be used with [http-errors](https://gith
 ## Example
 
 ```ts
-import errorHandler from 'express-json-error';
+import jsonError from 'express-json-error';
 
 const app = express()
 	.get(...);
 
-api.use(errorHandler);
+api.use(jsonError);
 // or with options configured..
-app.use(errorHandler({ showStackTrace: true } | {} | undefined | never));
+app.use(jsonError({ showStackTrace: true } | {} | undefined | never));
 
 app.listen(...);
 ```
@@ -23,11 +23,11 @@ app.listen(...);
 _after your routes:_
 
 ```ts
-app.use(errorHandler)
+app.use(jsonError)
 ```
 
 ```ts
-app.use(errorHandler(options | {} | undefined | never))
+app.use(jsonError(options | {} | undefined | never))
 ```
 
 ### Options

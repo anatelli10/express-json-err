@@ -6,7 +6,7 @@ An error handler for JSON APIs, meant to be used with [http-errors](https://gith
 ## Example
 
 ```ts
-import { errorHandler } from 'express-json-error';
+import errorHandler from 'express-json-error';
 
 const app = express()
 	.get(...);

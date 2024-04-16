@@ -2,7 +2,40 @@
 import { ErrorRequestHandler as RequestHandler } from 'express';
 import statuses from 'statuses';
 
-export default errorHandler;
+/**
+ * An error handler for JSON APIs.
+ *
+ * @example
+ *
+ * import jsonError from 'express-json-error';
+ *
+ * const app = express()
+ * 	.get(...);
+ *
+ * app.use(jsonError);
+ * // or with options configured..
+ * app.use(jsonError({ showStackTrace: true } | {} | undefined | never));
+ *
+ * app.listen(...);
+ */
+export default function jsonError(options: ErrorHandlerOptions | undefined): RequestHandler;
+export default function jsonError(...args: Parameters<RequestHandler>): ReturnType<RequestHandler>;
+export default function jsonError(
+	errOrOptions: ErrorHandlerOptions | undefined | Parameters<RequestHandler>[0],
+	req?: Parameters<RequestHandler>[1],
+	res?: Parameters<RequestHandler>[2],
+	next?: Parameters<RequestHandler>[3],
+) {
+	if ([req, res, next].every((arg) => arg === undefined)) {
+		// configure the handler
+		const options: ErrorHandlerOptions | undefined = errOrOptions;
+		return handler(options);
+	}
+
+	// pass thru to the handler
+	const err: Parameters<RequestHandler>[0] = errOrOptions;
+	return handler()(err, req!, res!, next!);
+}
 
 export type ErrorHandlerOptions = Partial<{
 	/**
@@ -12,59 +45,14 @@ export type ErrorHandlerOptions = Partial<{
 	showStackTrace: boolean;
 }>;
 
-/**
- * An error handler for JSON APIs.
- *
- * @example
- *
- * const app = express()
- * 	.get(...);
- *
- * app.use(errorHandler);
- * // or with options configured..
- * app.use(errorHandler({ showStackTrace: true } | {} | undefined | never));
- *
- * app.listen(...);
- */
-function errorHandler(...args: Parameters<RequestHandler>): ReturnType<RequestHandler>;
-function errorHandler(options?: ErrorHandlerOptions): RequestHandler;
-function errorHandler(
-	_optionsOrErr?: ErrorHandlerOptions | Parameters<RequestHandler>[0],
-	_req?: Parameters<RequestHandler>[1],
-	res?: Parameters<RequestHandler>[2],
-	_next?: Parameters<RequestHandler>[3],
-): RequestHandler | ReturnType<RequestHandler> {
-	var config: ErrorHandlerOptions = {
+function handler(options: ErrorHandlerOptions = {}): RequestHandler {
+	const defaultConfig: ErrorHandlerOptions = {
 		showStackTrace: 'development' === process.env.NODE_ENV,
 	};
 
-	// We're receiving an express request handler input
-	// Pass the args thru
-	//
-	// i.e. `app.use(errorHandler)`
-	if (_req != null) {
-		const err: Parameters<RequestHandler>[0] = _optionsOrErr;
+	const config = { ...defaultConfig, ...options };
 
-		return handler(err, _req, res!, _next!);
-	}
-
-	const options: ErrorHandlerOptions = _optionsOrErr ?? {};
-
-	// We're receiving configuration options
-	//
-	// i.e. `app.use(errorHandler({ showStackTrace: false }))`
-	if (Object.keys(options).length) {
-		Object.assign(config, options);
-	}
-
-	return handler;
-
-	function handler(
-		err: Parameters<RequestHandler>[0],
-		_req: Parameters<RequestHandler>[1],
-		res: Parameters<RequestHandler>[2],
-		_next: Parameters<RequestHandler>[3],
-	) {
+	return (err, _req, res, _next) => {
 		const { code, name, message, type, stack } = err;
 
 		const status = (() => {
@@ -93,5 +81,5 @@ function errorHandler(
 				...(config.showStackTrace && { stack }),
 			});
 		}
-	}
+	};
 }

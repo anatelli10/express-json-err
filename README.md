@@ -1,3 +1,5 @@
+⋔ from [expressjs/api-error-handler](https://github.com/expressjs/api-error-handler/blob/master/index.js)
+
 # express-json-error
 
 An error handler for JSON APIs, meant to be used with [http-errors](https://github.com/jshttp/http-errors)-style errors.

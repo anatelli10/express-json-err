@@ -63,7 +63,7 @@ function handler(options: ErrorHandlerOptions = {}): RequestHandler {
 
 			res.status(status).json({
 				status,
-				message: statuses(status),
+				message: statuses[status],
 				...(config.showStackTrace && { stack }),
 			});
 		} else {

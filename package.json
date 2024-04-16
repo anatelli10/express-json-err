@@ -1,24 +1,30 @@
 {
-  "name": "api-error-handler",
+  "name": "express-json-error",
   "description": "Express error handlers for JSON APIs",
   "version": "1.0.0",
-  "author": "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)",
+  "contributors": [
+    "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)",
+    "Tony Natelli <tony@natel.li>"
+  ],
   "license": "MIT",
-  "repository": "expressjs/api-error-handler",
+  "scripts": {
+    "test": "jest --watch"
+  },
   "dependencies": {
-    "statuses": "^1.2.0"
+    "statuses": "^1.5.0"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/express": "^4.17.21",
+    "@types/http-errors": "^2.0.4",
+    "@types/jest": "^29.5.12",
+    "@types/statuses": "^1.5.0",
+    "@types/supertest": "^6.0.2",
     "express": "^4.10.4",
     "http-errors": "^1.2.8",
-    "istanbul": "0",
-    "mocha": "2",
-    "supertest": "^0.15.0"
-  },
-  "scripts": {
-    "test": "mocha --reporter spec",
-    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot",
-    "test-travis": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter dot"
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2"
   },
   "keywords": [
     "express",
@@ -28,6 +34,6 @@
     "json"
   ],
   "files": [
-    "index.js"
+    "index.ts"
   ]
 }

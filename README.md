@@ -1,4 +1,3 @@
-
 # express-json-error
 
 An error handler for JSON APIs, meant to be used with [http-errors](https://github.com/jshttp/http-errors)-style errors.
@@ -13,7 +12,7 @@ const app = express()
 
 api.use(jsonError);
 // or with options configured..
-app.use(jsonError({ showStackTrace: true } | {} | undefined | never));
+app.use(jsonError({ showStackTrace: true } | {} | undefined));
 
 app.listen(...);
 ```
@@ -23,18 +22,19 @@ app.listen(...);
 _after your routes:_
 
 ```ts
-app.use(jsonError)
+app.use(jsonError);
 ```
 
 ```ts
-app.use(jsonError(options | {} | undefined | never))
+app.use(jsonError(options | {} | undefined));
 ```
 
 ### Options
 
-#### `showStackTrace` 
-* Determines whether the response should contain the error stack trace.
-* By default, stack trace is only included when the environment variable `NODE_ENV` is `"development"`.
+#### `showStackTrace`
+
+- Determines whether the response should contain the error stack trace.
+- By default, stack trace is only included when the environment variable `NODE_ENV` is `"development"`.
 
 ### Errors
 

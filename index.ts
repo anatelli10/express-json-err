@@ -26,15 +26,11 @@ export default function jsonError(
 	res?: Parameters<RequestHandler>[2],
 	next?: Parameters<RequestHandler>[3],
 ) {
-	if ([req, res, next].every((arg) => arg === undefined)) {
-		// configure the handler
-		const options: ErrorHandlerOptions | undefined = errOrOptions;
-		return handler(options);
-	}
-
-	// pass thru to the handler
-	const err: Parameters<RequestHandler>[0] = errOrOptions;
-	return handler()(err, req!, res!, next!);
+	return [req, res, next].every((arg) => arg === undefined)
+		? // configure the handler
+		  handler(errOrOptions as ErrorHandlerOptions | undefined)
+		: // pass thru to the handler
+		  handler()(errOrOptions as Parameters<RequestHandler>[0], req!, res!, next!);
 }
 
 export type ErrorHandlerOptions = Partial<{

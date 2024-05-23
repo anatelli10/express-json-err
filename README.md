@@ -12,7 +12,7 @@ import jsonError from 'express-json-error';
 const app = express()
 	.get(...);
 
-api.use(jsonError);
+app.use(jsonError);
 // or with options configured..
 app.use(jsonError({ showStackTrace: true } | {} | undefined));
 

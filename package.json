@@ -3,8 +3,8 @@
   "description": "Express error handlers for JSON APIs",
   "version": "1.0.0",
   "contributors": [
-    "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)",
-    "Tony Natelli <tony@natel.li>"
+    "Jonathan Ong <me@jongleberry.com> (https://jongleberry.com)",
+    "Tony Natelli <tony@suspended.systems> (https://suspended.systems)"
   ],
   "license": "MIT",
   "scripts": {

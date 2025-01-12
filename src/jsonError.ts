@@ -1,9 +1,12 @@
 // adapted from https://github.com/expressjs/api-error-handler/blob/master/index.js
-import { ErrorRequestHandler as RequestHandler } from 'express';
-import statuses from 'statuses';
+import { ErrorRequestHandler as RequestHandler } from "express";
+import statuses from "statuses";
+import { serializeError } from "serialize-error";
 
 /**
  * An error handler for JSON APIs.
+ *
+ * This overload function enables calling without parentheses if using default options.
  *
  * @example
  *
@@ -43,7 +46,7 @@ export type ErrorHandlerOptions = Partial<{
 
 function handler(options: ErrorHandlerOptions = {}): RequestHandler {
 	const defaultConfig: ErrorHandlerOptions = {
-		showStackTrace: 'development' === process.env.NODE_ENV,
+		showStackTrace: "development" === process.env.NODE_ENV,
 	};
 
 	const config = { ...defaultConfig, ...options };
@@ -51,20 +54,26 @@ function handler(options: ErrorHandlerOptions = {}): RequestHandler {
 	return (err, _req, res, _next) => {
 		const { code, name, message, type, stack } = err;
 
+		const serializedErrorStack = serializeError(stack);
+
 		const status = (() => {
 			const code = err.status || err.statusCode;
 
-			return code >= 400 ? code : 500;
+			if (code >= 400) {
+				return code;
+			}
+
+			return 500;
 		})();
 
 		if (status >= 500) {
 			// internal server errors
-			console.error(stack);
+			console.error(serializedErrorStack);
 
 			res.status(status).json({
 				status,
 				message: statuses[status],
-				...(config.showStackTrace && { stack }),
+				...(config.showStackTrace && { stack: serializedErrorStack }),
 			});
 		} else {
 			// client errors
@@ -74,7 +83,7 @@ function handler(options: ErrorHandlerOptions = {}): RequestHandler {
 				...(code && { code }),
 				...(name && { name }),
 				...(type && { type }),
-				...(config.showStackTrace && { stack }),
+				...(config.showStackTrace && { stack: serializedErrorStack }),
 			});
 		}
 	};

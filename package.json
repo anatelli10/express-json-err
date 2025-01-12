@@ -1,16 +1,19 @@
 {
   "name": "express-json-error",
   "description": "Express error handlers for JSON APIs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "contributors": [
     "Jonathan Ong <me@jongleberry.com> (https://jongleberry.com)",
-    "Tony Natelli <tony@suspended.systems> (https://suspended.systems)"
+    "Tony Natelli <tony@natel.li> (https://suspended.systems)"
   ],
   "license": "MIT",
   "scripts": {
-    "test": "jest --watch"
+    "prepublish": "npm run clean && tsc -p . --declaration --outdir dist",
+    "clean": "rm -rf dist",
+    "test": "jest --watch --detectOpenHandles"
   },
   "dependencies": {
+    "serialize-error": "^12.0.0",
     "statuses": "^1.5.0"
   },
   "devDependencies": {
@@ -34,6 +37,6 @@
     "json"
   ],
   "files": [
-    "index.ts"
+    "src/jsonError.ts"
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "name": "express-json-error",
+  "name": "express-json-err",
   "description": "Express error handlers for JSON APIs",
   "version": "1.0.1",
   "contributors": [

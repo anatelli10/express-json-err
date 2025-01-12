@@ -10,7 +10,7 @@ import { serializeError } from "serialize-error";
  *
  * @example
  *
- * import jsonError from 'express-json-error';
+ * import jsonError from 'express-json-err';
  *
  * const app = express()
  * 	.get(...);

@@ -6,7 +6,7 @@ import { ErrorRequestHandler as RequestHandler } from "express";
  *
  * @example
  *
- * import jsonError from 'express-json-error';
+ * import jsonError from 'express-json-err';
  *
  * const app = express()
  * 	.get(...);

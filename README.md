@@ -9,14 +9,14 @@ The same great module by @jonathanong except with some modernizations:
 - configuration option `showStackTrace`
 - call with default options without parentheses like `app.use(jsonError)` vs `app.use(jsonError({ showStackTrace: true })`
 
-# express-json-error
+# express-json-err
 
 An error handler for JSON APIs, meant to be used with [http-errors](https://github.com/jshttp/http-errors)-style errors.
 
 ## Usage
 
 ```ts
-import jsonError from 'express-json-error';
+import jsonError from 'express-json-err';
 
 const app = express()
 	.get(...);

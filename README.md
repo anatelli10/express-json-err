@@ -4,7 +4,6 @@ The same great module by @jonathanong except with some modernizations:
 
 - stateless logic
 - deps upgraded
-- stack traces now serialized with serialize-error
 - supertest replaced with jest
 - configuration option `showStackTrace`
 - call with default options without parentheses like `app.use(jsonError)` vs `app.use(jsonError({ showStackTrace: true })`
@@ -34,12 +33,12 @@ app.listen(...);
 
 ```json
 {
-	"status": "",
-	"message": "",
+	"status": 500,
+	"message": "Internal Server Error",
 	"code": 500,
 	"name": "",
 	"type": "",
-	"stack": [],
+	"stack": "",
 };
 ```
 

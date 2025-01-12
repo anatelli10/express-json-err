@@ -1,7 +1,6 @@
 // adapted from https://github.com/expressjs/api-error-handler/blob/master/index.js
 import { ErrorRequestHandler as RequestHandler } from "express";
 import statuses from "statuses";
-import { serializeError } from "serialize-error";
 
 /**
  * An error handler for JSON APIs.
@@ -54,8 +53,6 @@ function handler(options: ErrorHandlerOptions = {}): RequestHandler {
 	return (err, _req, res, _next) => {
 		const { code, name, message, type, stack } = err;
 
-		const serializedErrorStack = serializeError(stack);
-
 		const status = (() => {
 			const code = err.status || err.statusCode;
 
@@ -68,12 +65,12 @@ function handler(options: ErrorHandlerOptions = {}): RequestHandler {
 
 		if (status >= 500) {
 			// internal server errors
-			console.error(serializedErrorStack);
+			console.error(stack);
 
 			res.status(status).json({
 				status,
 				message: statuses[status],
-				...(config.showStackTrace && { stack: serializedErrorStack }),
+				...(config.showStackTrace && { stack }),
 			});
 		} else {
 			// client errors
@@ -83,7 +80,7 @@ function handler(options: ErrorHandlerOptions = {}): RequestHandler {
 				...(code && { code }),
 				...(name && { name }),
 				...(type && { type }),
-				...(config.showStackTrace && { stack: serializedErrorStack }),
+				...(config.showStackTrace && { stack }),
 			});
 		}
 	};

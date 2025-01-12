@@ -3,7 +3,7 @@
 		"baseUrl": "./",
 		"outDir": "dist",
 		"paths": {
-			// only intended to enable an esm import of serialize-error in .ts files
+			// compatibility future proofing: esm import in .ts files
 			"*": ["node_modules/*/index"]
 		},
 		"target": "ES2022",

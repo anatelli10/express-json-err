@@ -5,11 +5,6 @@ import assert from "assert";
 
 import jsonError from "./jsonError";
 
-// mock esm, does not affect test integrity
-jest.mock("serialize-error", () => ({
-	serializeError: jest.fn((x) => x), // Mocked behavior
-}));
-
 const handlerTest = (httpError: HttpError, errorHandler: ErrorRequestHandler, callback: CallbackHandler) => {
 	const app = express();
 

@@ -13,7 +13,6 @@
     "test": "jest --watch --detectOpenHandles"
   },
   "dependencies": {
-    "serialize-error": "^12.0.0",
     "statuses": "^1.5.0"
   },
   "devDependencies": {
@@ -36,6 +35,8 @@
     "api",
     "json"
   ],
+  "main": "dist/jsonError.js",
+  "types": "dist/jsonError.d.ts",
   "files": [
     "dist"
   ]

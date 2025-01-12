@@ -1,5 +1,4 @@
 import statuses from "statuses";
-import { serializeError } from "serialize-error";
 export default function jsonError(errOrOptions, req, res, next) {
     return req && res && next
         ? // pass thru to the handler
@@ -14,7 +13,6 @@ function handler(options = {}) {
     const config = { ...defaultConfig, ...options };
     return (err, _req, res, _next) => {
         const { code, name, message, type, stack } = err;
-        const serializedErrorStack = serializeError(stack);
         const status = (() => {
             const code = err.status || err.statusCode;
             if (code >= 400) {
@@ -24,11 +22,11 @@ function handler(options = {}) {
         })();
         if (status >= 500) {
             // internal server errors
-            console.error(serializedErrorStack);
+            console.error(stack);
             res.status(status).json({
                 status,
                 message: statuses[status],
-                ...(config.showStackTrace && { stack: serializedErrorStack }),
+                ...(config.showStackTrace && { stack }),
             });
         }
         else {
@@ -39,7 +37,7 @@ function handler(options = {}) {
                 ...(code && { code }),
                 ...(name && { name }),
                 ...(type && { type }),
-                ...(config.showStackTrace && { stack: serializedErrorStack }),
+                ...(config.showStackTrace && { stack }),
             });
         }
     };

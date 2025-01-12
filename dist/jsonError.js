@@ -6,6 +6,13 @@ export default function jsonError(errOrOptions, req, res, next) {
         : // configure the handler
             handler(errOrOptions);
 }
+const parseStatus = (err) => {
+    const code = err.status || err.statusCode;
+    if (code >= 400) {
+        return code;
+    }
+    return 500;
+};
 function handler(options = {}) {
     const defaultConfig = {
         showStackTrace: "development" === process.env.NODE_ENV,
@@ -13,13 +20,7 @@ function handler(options = {}) {
     const config = { ...defaultConfig, ...options };
     return (err, _req, res, _next) => {
         const { code, name, message, type, stack } = err;
-        const status = (() => {
-            const code = err.status || err.statusCode;
-            if (code >= 400) {
-                return code;
-            }
-            return 500;
-        })();
+        const status = parseStatus(err);
         if (status >= 500) {
             // internal server errors
             console.error(stack);

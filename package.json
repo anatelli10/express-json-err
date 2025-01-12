@@ -1,7 +1,7 @@
 {
   "name": "express-json-err",
   "description": "Express error handlers for JSON APIs",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "contributors": [
     "Jonathan Ong <me@jongleberry.com> (https://jongleberry.com)",
     "Tony Natelli <tony@natel.li> (https://suspended.systems)"

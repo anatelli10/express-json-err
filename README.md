@@ -29,16 +29,16 @@ app.listen(...);
 
 ## API
 
-## Response Body
+### Response body schema
 
-```json
-{
-	"status": 500,
-	"message": "Internal Server Error",
-	"code": 500,
-	"name": "",
-	"type": "",
-	"stack": "",
+```ts
+type ResponseBody = {
+	status: number;
+	message: string;
+	code?: number;
+	name?: string;
+	type?: string;
+	stack?: string;
 };
 ```
 
@@ -63,9 +63,12 @@ Properties exposed are:
 5xx errors are not exposed to the client.
 Instead, they are given a generic `message` as well as the `type`.
 
-### Publishing
+## Publishing
+
+bump the version accordingly..
 
 ```sh
+
 npm run prepublish
 npm publish
 ```

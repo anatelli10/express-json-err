@@ -43,6 +43,25 @@ export type ErrorHandlerOptions = Partial<{
 	showStackTrace: boolean;
 }>;
 
+type ResponseBody = {
+	status: number;
+	message: string;
+	code?: number;
+	name?: string;
+	type?: string;
+	stack?: string;
+};
+
+const parseStatus = (err: any) => {
+	const code = err.status || err.statusCode;
+
+	if (code >= 400) {
+		return code;
+	}
+
+	return 500;
+};
+
 function handler(options: ErrorHandlerOptions = {}): RequestHandler {
 	const defaultConfig: ErrorHandlerOptions = {
 		showStackTrace: "development" === process.env.NODE_ENV,
@@ -53,15 +72,7 @@ function handler(options: ErrorHandlerOptions = {}): RequestHandler {
 	return (err, _req, res, _next) => {
 		const { code, name, message, type, stack } = err;
 
-		const status = (() => {
-			const code = err.status || err.statusCode;
-
-			if (code >= 400) {
-				return code;
-			}
-
-			return 500;
-		})();
+		const status = parseStatus(err);
 
 		if (status >= 500) {
 			// internal server errors
@@ -71,7 +82,7 @@ function handler(options: ErrorHandlerOptions = {}): RequestHandler {
 				status,
 				message: statuses[status],
 				...(config.showStackTrace && { stack }),
-			});
+			} as ResponseBody);
 		} else {
 			// client errors
 			res.status(status).json({
@@ -81,7 +92,7 @@ function handler(options: ErrorHandlerOptions = {}): RequestHandler {
 				...(name && { name }),
 				...(type && { type }),
 				...(config.showStackTrace && { stack }),
-			});
+			} as ResponseBody);
 		}
 	};
 }

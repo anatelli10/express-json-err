@@ -1,10 +1,19 @@
 ⋔ from [expressjs/api-error-handler](https://github.com/expressjs/api-error-handler/blob/master/index.js)
 
+The same great module by @jonathanong except with some modernizations:
+
+- stateless logic
+- deps upgraded
+- stack traces now serialized with serialize-error
+- supertest replaced with jest
+- configuration option `showStackTrace`
+- call with default options without parentheses like `app.use(jsonError)` vs `app.use(jsonError({ showStackTrace: true })`
+
 # express-json-error
 
 An error handler for JSON APIs, meant to be used with [http-errors](https://github.com/jshttp/http-errors)-style errors.
 
-## Example
+## Usage
 
 ```ts
 import jsonError from 'express-json-error';
@@ -21,14 +30,17 @@ app.listen(...);
 
 ## API
 
-_after your routes:_
+## Response Body
 
-```ts
-app.use(jsonError);
-```
-
-```ts
-app.use(jsonError(options | {} | undefined));
+```json
+{
+	"status": "",
+	"message": "",
+	"code": 500,
+	"name": "",
+	"type": "",
+	"stack": [],
+};
 ```
 
 ### Options
@@ -51,3 +63,10 @@ Properties exposed are:
 
 5xx errors are not exposed to the client.
 Instead, they are given a generic `message` as well as the `type`.
+
+### Publishing
+
+```sh
+npm run prepublish
+npm publish
+```
